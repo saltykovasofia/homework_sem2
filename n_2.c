@@ -1,40 +1,51 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#include <time.h>
 
-char *getInput() { 
-    char *str = (char *)malloc(100);
-    printf("Введите строку: ");
-    fgets(str, 100, stdin);
-    return str;
-}
-
-bool testInput(char str[100]) {
-    int i, n = 0;
-    for (i = 0; str[i]!=0; i++) 
-        if ((str[i]>='0' && str[i]<='9') || (str[i]=='-'))
-            n++;
-    return (str[0]=='-'&&n==i-1)||(n+1)==i;
-}
-
-long strToInt(char str[100]) {
-    long result = strtol(str, NULL, 10);
-    return result;
-}
-
-void printInt(long result) {
-    printf ("%ld", result);
+// Функция для поиска элемента в двумерном массиве
+int find_el(int arr[][3], int rows, int columns, int el) {
+    int row = -1, col = -1;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            if (arr[i][j] == el) {
+                row = i;
+                col = j;
+                break;
+            }
+        }
+        if (row >= 0) {
+            break;
+        }
+    }
+    if (row >= 0) {
+        printf("Элемент %d найден в строке %d, столбце %d\n", el, row, col);
+    } else {
+        printf("Элемент %d не найден в массиве\n", el);
+    }
 }
 
 int main() {
-    char *str = getInput();
-    bool research = testInput(str);
-    if (research) {
-        long newstr = strToInt(str);
-        printInt(newstr);
+    srand(time(NULL));
+    int arr[3][3];
+    int rows = sizeof(arr) / sizeof(arr[0]);
+    int cols = sizeof(arr[0]) / sizeof(arr[0][0]);
+
+    // Заполнение массива
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            arr[i][j] = rand() % 10;
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
     }
-    else 
-        printf("Введенную строчку нельзя преобразовать в число");
+
+    // Запрос элемента, который надо найти
+    int el;
+    printf("Введите элемент, который необходимо найти: ");
+    scanf("%d", &el);
+
+    // Поиск элемента в массиве
+    find_el(arr, rows, cols, el);
+
     return 0;
 }
